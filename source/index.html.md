@@ -92,15 +92,10 @@ Returns an array containing all entities on the map, including our character.
  Variable | Type   | Description
 ----------|--------|----------------------------------
  id       | number | Unique identifier for the entity 
-----------|--------|----------------------------------
  name     | string | Name of the entity
-----------|--------|----------------------------------
  x        | number | X coordinate of the entity
-----------|--------|----------------------------------
  y        | number | Y coordinate of the entity
-----------|--------|----------------------------------
  team     | number | Team of the entity
-----------|--------|----------------------------------
  race     | string | Race of the entity
 
 ```javascript
