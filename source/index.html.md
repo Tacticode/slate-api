@@ -1,5 +1,5 @@
 ---
-title: API Reference
+title: Tacticode API Reference
 
 language_tabs:
   - javascript
@@ -14,80 +14,72 @@ search: true
 
 Welcome to the Tacticode API!
 
+<aside class="success">
+This page is still a work-in-progress, do not hesitate to add or edit things!
+</aside>
+
 # Retrieving information
 
-## About the character
+## About the entities
 
-### getPositionX()
+### getCurrentEntity()
 
 ```javascript
-var x = getPositionX();
+var me = getCurrentEntity();
+
+console.log("Position:", me.x, me.y);
+console.log("Team:", me.team);
+console.log("Life:", me.life + "/" + me.maxLife);
+console.log("MP:", me.mp + "/" + me.maxMP);
+
+for (int i = 0; i < me.skills.length; ++i) {
+	console.log(me.skills[i]);
+}
 ```
 
-Returns the X coordinate of the current character.
+Returns an object containing information about the current character.
 
-### getPositionY()
+This object contains the following values:
+
+ Variable | Type   | Description
+----------|--------|----------------------------------
+ id       | number | Unique identifier for the entity 
+ name     | string | Name of the entity
+ x        | number | X coordinate of the entity
+ y        | number | Y coordinate of the entity
+ team     | number | Team of the entity
+ race     | string | Race of the entity
+ life     | number | Current life of the entity
+ maxLife  | number | Maximum life of the entity
+ mp       | number | Current movement points of the entity
+ maxMp    | number | Maximum movement points of the entity
+ skills   | array of string | Array containing the skills this entity can use
+
+### getEntities()
 
 ```javascript
-var y = getPositionY();
-```
+var entities = getEntities();
 
-Returns the Y coordinate of the current character.
-
-### getSkills()
-
-```javascript
-var skills = getSkills();
-
-for (int i = 0; i < skills.length; ++i) {
-	console.log(skills[i]);
+for (int i = 0; i < entities.length; ++i) {
+	console.log(entities[i].name, entities[i].x, entities[i].y);
 	// ...
 }
 ```
 
-Returns an array containing the names of the current character skills.
+Returns an array containing all entities on the map, including our character.
 
-### getRemainingLife()
-
-```javascript
-var life = getRemaininglife();
-```
-
-Returns the amount of remaining life points of this character.
-
-### getMaximumLife()
+### getEntityOnCell(x, y)
 
 ```javascript
-var max = getMaximumLife();
-var life = getRemainingLife();
+var entity = getEntityOnCell(15, 4);
 
-if (life < max) {
-	console.log("We lost some life during the battle.");
+if (entity !== null) {
+	console.log(entity.name, entity.team, entity.race);
+	// ...
 }
 ```
 
-Returns the maximum amount of life points this character can have.
-
-### getRemainingMP()
-
-```javascript
-var mp = getRemainingMP();
-```
-
-Returns the amount of remaining movement points of this character.
-
-### getMaximumMP()
-
-```javascript
-var max = getMaximumMP();
-var mp = getRemainingMP();
-
-if (max === mp) {
-	console.log("We have all our movements points!");
-}
-```
-
-Returns the maximum amount of movement points this character can have.
+If there is an entity on the specified cell, returns the entity. Returns `null` otherwise.
 
 ## About the map
 
@@ -125,43 +117,6 @@ if (los) {
 
 Returns true if the specified cell does not block the line of sight, false otherwise.
 
-## About the other entities
-
-### getEntities()
-
-```javascript
-var entities = getEntities();
-
-for (int i = 0; i < entities.length; ++i) {
-	console.log(entities[i].name, entities[i].x, entities[i].y);
-	// ...
-}
-```
-
-Returns an array containing all entities on the map, including our character.
-
- Variable | Type   | Description
-----------|--------|----------------------------------
- id       | number | Unique identifier for the entity 
- name     | string | Name of the entity
- x        | number | X coordinate of the entity
- y        | number | Y coordinate of the entity
- team     | number | Team of the entity
- race     | string | Race of the entity
-
-### getEntityOnCell(x, y)
-
-```javascript
-var entity = getEntityOnCell(15, 4);
-
-if (entity !== null) {
-	console.log(entity.name, entity.team, entity.race);
-	// ...
-}
-```
-
-If there is an entity on the specified cell, returns the entity. Returns `null` otherwise.
-
 # Executing an action
 
 ## With our character
@@ -188,7 +143,7 @@ Move our character to the specified cell. Returns one of the following values:
 
 Even in case of an error, the character might have moved partially or to the destination.
 
-<aside class="warning">This function will not avoid obstacles, make sure the path is clear!</aside>
+<aside class="notice">This function will not avoid obstacles, make sure the path is clear!</aside>
 
 ### cast(skill, x, y)
 
