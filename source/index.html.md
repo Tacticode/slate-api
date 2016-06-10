@@ -2,167 +2,141 @@
 title: API Reference
 
 language_tabs:
-  - shell
-  - ruby
-  - python
+  - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
   - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
-
-includes:
-  - errors
 
 search: true
 ---
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Tacticode API!
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+# Retrieving information
 
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+## About the character
 
-# Authentication
+### getPositionX()
 
-> To authorize, use this code:
+Returns the X coordinate of the current character.
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+```javascript
+var x = getPositionX();
 ```
 
-```python
-import kittn
+### getPositionY()
 
-api = kittn.authorize('meowmeowmeow')
+Returns the Y coordinate of the current character.
+
+```javascript
+var y = getPositionY();
 ```
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
+### getSkills()
 
-> Make sure to replace `meowmeowmeow` with your API key.
+Returns an array containing the names of the current character skills.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+```javascript
+var skills = getSkills();
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+for (int i = 0; i < skills.length; ++i) {
+	console.log(skills[i]);
+	// ...
 }
 ```
 
-This endpoint retrieves a specific kitten.
+## About the map
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+### getCellHeight(x, y)
 
-### HTTP Request
+Returns the height of the specified cell.
 
-`GET http://example.com/kittens/<ID>`
+```javascript
+var height = getCellHeight(getPlayerX(), getPlayerY());
 
-### URL Parameters
+console.log("Current height:", height);
+```
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+### isCellWalkable(x, y)
 
+Returns true if an entity can walk on the specified cell, false otherwise.
+
+```javascript
+var walkable = isCellWalkable(getPlayerX(), getPlayerY() + 1);
+
+if (walkable) {
+	console.log("The cell south of us is walkable.")
+}```
+
+### hasCellLineOfSight(x, y)
+
+Returns true if the specified cell does not block the line of sight, false otherwise.
+
+```javascript
+var los = hasCellLineOfSight(getPlayerX(), getPlayerY() + 1);
+
+if (los) {
+	cast("Fireball", getPlayerX(), getPlayerY() + 2);
+}```
+
+## About the other entities
+
+### getEntities()
+
+Returns an array containing all entities on the map, including our character.
+
+ Variable | Type   | Description
+----------|--------|----------------------------------
+ id       | number | Unique identifier for the entity 
+----------|--------|----------------------------------
+ name     | string | Name of the entity
+----------|--------|----------------------------------
+ x        | number | X coordinate of the entity
+----------|--------|----------------------------------
+ y        | number | Y coordinate of the entity
+----------|--------|----------------------------------
+ team     | number | Team of the entity
+----------|--------|----------------------------------
+ race     | string | Race of the entity
+
+```javascript
+var entities = getEntities();
+
+for (int i = 0; i < entities.length; ++i) {
+	console.log(entities[i].name, entities[i].x, entities[i].y);
+	// ...
+}
+```
+
+### getEntityOnCell(x, y)
+
+If there is an entity on the specified cell, returns the entity. Returns `null` otherwise.
+
+```javascript
+var entity = getEntityOnCell(15, 4);
+
+if (entity !== null) {
+	console.log(entity.name, entity.team, entity.race);
+	// ...
+}
+```
+
+# Executing an action
+
+## With our character
+
+### moveToCell(x, y)
+
+### move(direction)
+
+### cast(spell)
+
+### cast(spell, x, y)
+
+# Waiting for an event
+
+## Mandatory events
+
+### onTurn()
