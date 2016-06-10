@@ -20,9 +20,7 @@ This page is still a work-in-progress, do not hesitate to add or edit things!
 
 # Retrieving information
 
-## About the entities
-
-### getCurrentEntity()
+## getCurrentEntity()
 
 ```javascript
 var me = getCurrentEntity();
@@ -55,7 +53,7 @@ This object contains the following values:
  maxMp    | number | Maximum movement points of the entity
  skills   | array of string | Array containing the skills this entity can use
 
-### getEntities()
+## getEntities()
 
 ```javascript
 var entities = getEntities();
@@ -68,7 +66,7 @@ for (int i = 0; i < entities.length; ++i) {
 
 Returns an array containing all entities on the map, including our character.
 
-### getEntityOnCell(x, y)
+## getEntityOnCell(x, y)
 
 ```javascript
 var entity = getEntityOnCell(15, 4);
@@ -81,9 +79,7 @@ if (entity !== null) {
 
 If there is an entity on the specified cell, returns the entity. Returns `null` otherwise.
 
-## About the map
-
-### getCellHeight(x, y)
+## getCellHeight(x, y)
 
 ```javascript
 var height = getCellHeight(getPositionX(), getPositionY());
@@ -117,11 +113,9 @@ if (los) {
 
 Returns true if the specified cell does not block the line of sight, false otherwise.
 
-# Executing an action
+# Executing actions
 
-## With our character
-
-### moveToCell(x, y)
+## moveToCell(x, y)
 
 ```javascript
 var result = moveToCell(2, 8);
@@ -145,7 +139,7 @@ Even in case of an error, the character might have moved partially or to the des
 
 <aside class="notice">This function will not avoid obstacles, make sure the path is clear!</aside>
 
-### cast(skill, x, y)
+## cast(skill, x, y)
 
 ```javascript
 var entities = getEntities();
@@ -160,7 +154,7 @@ Cast a skill on the specified cell. Returns one of the following values:
  `SUCCESS`             | The character used the skill successfully.
  `ERROR_ALREADY_USED`  | The character already used a skill this turn.
 
-### cast(skill)
+## cast(skill)
 
 ```javascript
 cast("Heal");
@@ -171,11 +165,9 @@ cast("Heal", getPositionX(), getPositionY());
 
 Cast a skill on the current character. Alias for `cast(spell, getPositionX(), getPositionY())`.
 
-# Waiting for an event
+# Waiting for events
 
-## Mandatory events
-
-### onTurn()
+## onTurn()
 
 ```javascript
 function onTurn() {
