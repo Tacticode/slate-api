@@ -47,12 +47,54 @@ for (int i = 0; i < skills.length; ++i) {
 
 Returns an array containing the names of the current character skills.
 
+### getRemainingLife()
+
+```javascript
+var life = getRemaininglife();
+```
+
+Returns the amount of remaining life points of this character.
+
+### getMaximumLife()
+
+```javascript
+var max = getMaximumLife();
+var life = getRemainingLife();
+
+if (life < max) {
+	console.log("We lost some life during the battle.");
+}
+```
+
+Returns the maximum amount of life points this character can have.
+
+### getRemainingMP()
+
+```javascript
+var mp = getRemainingMP();
+```
+
+Returns the amount of remaining movement points of this character.
+
+### getMaximumMP()
+
+```javascript
+var max = getMaximumMP();
+var mp = getRemainingMP();
+
+if (max === mp) {
+	console.log("We have all our movements points!");
+}
+```
+
+Returns the maximum amount of movement points this character can have.
+
 ## About the map
 
 ### getCellHeight(x, y)
 
 ```javascript
-var height = getCellHeight(getPlayerX(), getPlayerY());
+var height = getCellHeight(getPositionX(), getPositionY());
 
 console.log("Current height:", height);
 ```
@@ -62,7 +104,7 @@ Returns the height of the specified cell.
 ### isCellWalkable(x, y)
 
 ```javascript
-var walkable = isCellWalkable(getPlayerX(), getPlayerY() + 1);
+var walkable = isCellWalkable(getPositionX(), getPositionY() + 1);
 
 if (walkable) {
 	console.log("The cell south of us is walkable.")
@@ -74,10 +116,10 @@ Returns true if an entity can walk on the specified cell, false otherwise.
 ### hasCellLineOfSight(x, y)
 
 ```javascript
-var los = hasCellLineOfSight(getPlayerX(), getPlayerY() + 1);
+var los = hasCellLineOfSight(getPositionX(), getPositionY() + 1);
 
 if (los) {
-	cast("Fireball", getPlayerX(), getPlayerY() + 2);
+	cast("Fireball", getPositionX(), getPositionY() + 2);
 }
 ```
 
@@ -126,14 +168,71 @@ If there is an entity on the specified cell, returns the entity. Returns `null` 
 
 ### moveToCell(x, y)
 
-### move(direction)
+```javascript
+var result = moveToCell(2, 8);
 
-### cast(spell)
+if (result !== SUCCESS) {
+	console.log(entity.name, entity.team, entity.race);
+	// ...
+}
+```
 
-### cast(spell, x, y)
+Move our character to the specified cell. Returns one of the following values:
+
+ Value                 | Description
+-----------------------| ---------------------------------------
+ `SUCCESS`             | The character moved to the destination.
+ `ERROR_OBSTACLE`      | There is an obstacle preventing the movement.
+ `ERROR_NOT_ENOUGH_MP` | The character does not have enough movement points.
+ `ERROR_TRAP`          | A trap was activated and interrupted the movement.
+
+Even in case of an error, the character might have moved partially or to the destination.
+
+<aside class="warning">This function will not avoid obstacles, make sure the path is clear!</aside>
+
+### cast(skill, x, y)
+
+```javascript
+var entities = getEntities();
+
+cast("Fireball", entities[0].x, entities[0].y);
+```
+
+Cast a skill on the specified cell. Returns one of the following values:
+
+ Value                 | Description
+-----------------------| ---------------------------------------
+ `SUCCESS`             | The character used the skill successfully.
+ `ERROR_ALREADY_USED`  | The character already used a skill this turn.
+
+### cast(skill)
+
+```javascript
+cast("Heal");
+
+// This is identical to:
+cast("Heal", getPositionX(), getPositionY());
+```
+
+Cast a skill on the current character. Alias for `cast(spell, getPositionX(), getPositionY())`.
 
 # Waiting for an event
 
 ## Mandatory events
 
 ### onTurn()
+
+```javascript
+function onTurn() {
+	var x = getPositionX();
+	var y = getPositionY();
+	moveToCell(x + 2, y);
+	
+	var entities = getEntities();
+	cast("Arrow", entities[0].x, entities[0].y);	
+}
+```
+
+You have to declare this event for your script to be valid. This is where you will code your character behaviour.
+
+This event is called once per turn, per character.
