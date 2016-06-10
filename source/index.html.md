@@ -68,7 +68,8 @@ var walkable = isCellWalkable(getPlayerX(), getPlayerY() + 1);
 
 if (walkable) {
 	console.log("The cell south of us is walkable.")
-}```
+}
+```
 
 ### hasCellLineOfSight(x, y)
 
@@ -79,7 +80,8 @@ var los = hasCellLineOfSight(getPlayerX(), getPlayerY() + 1);
 
 if (los) {
 	cast("Fireball", getPlayerX(), getPlayerY() + 2);
-}```
+}
+```
 
 ## About the other entities
 
