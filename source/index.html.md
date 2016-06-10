@@ -18,6 +18,7 @@ Welcome to the Tacticode API!
 This page is still a work-in-progress, do not hesitate to add or edit things!
 </aside>
 
+
 # Retrieving information
 
 ## getCurrentEntity()
@@ -37,7 +38,9 @@ for (int i = 0; i < me.skills.length; ++i) {
 
 Returns an object containing information about the current character.
 
-This object contains the following values:
+### RETURN VALUE
+
+Returns an object containing:
 
  Variable | Type   | Description
 ----------|--------|----------------------------------
@@ -53,6 +56,7 @@ This object contains the following values:
  maxMp    | number | Maximum movement points of the entity
  skills   | array of string | Array containing the skills this entity can use
 
+
 ## getEntities()
 
 ```javascript
@@ -65,6 +69,11 @@ for (int i = 0; i < entities.length; ++i) {
 ```
 
 Returns an array containing all entities on the map, including our character.
+
+### RETURN VALUE
+
+Returns an array of entities. See the return value of `getCurrentEntity()` for the definition of an entity.
+
 
 ## getEntityOnCell(x, y)
 
@@ -79,6 +88,11 @@ if (entity !== null) {
 
 If there is an entity on the specified cell, returns the entity. Returns `null` otherwise.
 
+### RETURN VALUE
+
+Returns an entity or `null`. See the return value of `getCurrentEntity()` for the definition of an entity.
+
+
 ## getCellHeight(x, y)
 
 ```javascript
@@ -89,7 +103,19 @@ console.log("Current height:", height);
 
 Returns the height of the specified cell.
 
-### isCellWalkable(x, y)
+### PARAMETERS
+
+Parameter | Type   | Description
+----------|--------|-------------
+x         | number | X coordinate of the cell.
+y         | number | Y coordinate of the cell.
+
+### RETURN VALUE
+
+Returns a number from -100 to 100 or `null` if the cell does not exist.
+
+
+## isCellWalkable(x, y)
 
 ```javascript
 var walkable = isCellWalkable(getPositionX(), getPositionY() + 1);
@@ -99,9 +125,23 @@ if (walkable) {
 }
 ```
 
-Returns true if an entity can walk on the specified cell, false otherwise.
+Returns whether or not the specified cell is walkable. A cell is walkable if entities can traverse it.
 
-### hasCellLineOfSight(x, y)
+### PARAMETERS
+
+Parameter | Type   | Description
+----------|--------|-------------
+x         | number | X coordinate of the cell.
+y         | number | Y coordinate of the cell.
+
+### RETURN VALUE
+
+Returns a `true` if the cell is walkable, `false` if not walkable` or `null` if the cell does not exist.
+
+
+## hasCellLineOfSight(x, y)
+
+Returns whether or not the specified cell will block the line of sight.
 
 ```javascript
 var los = hasCellLineOfSight(getPositionX(), getPositionY() + 1);
@@ -111,7 +151,17 @@ if (los) {
 }
 ```
 
-Returns true if the specified cell does not block the line of sight, false otherwise.
+### PARAMETERS
+
+Parameter | Type   | Description
+----------|--------|-------------
+x         | number | X coordinate of the cell.
+y         | number | Y coordinate of the cell.
+
+### RETURN VALUE
+
+Returns a `true` if the cell will not block the line of sight, `false` if it will block or `null` if the cell does not exist.
+
 
 # Executing actions
 
@@ -126,7 +176,20 @@ if (result !== SUCCESS) {
 }
 ```
 
-Move our character to the specified cell. Returns one of the following values:
+Move the current character to the specified cell.
+
+<aside class="warning">This function will not avoid obstacles, make sure the path is clear!</aside>
+
+### PARAMETERS
+
+Parameter | Type   | Description
+----------|--------|-------------
+x         | number | X coordinate of the cell.
+y         | number | Y coordinate of the cell.
+
+### RETURN VALUE
+
+Returns one of the following values:
 
  Value                 | Description
 -----------------------| ---------------------------------------
@@ -135,9 +198,8 @@ Move our character to the specified cell. Returns one of the following values:
  `ERROR_NOT_ENOUGH_MP` | The character does not have enough movement points.
  `ERROR_TRAP`          | A trap was activated and interrupted the movement.
 
-Even in case of an error, the character might have moved partially or to the destination.
+<aside class="notice">Even in case of an error, the character might have moved partially!</aside>
 
-<aside class="notice">This function will not avoid obstacles, make sure the path is clear!</aside>
 
 ## cast(skill, x, y)
 
@@ -147,13 +209,26 @@ var entities = getEntities();
 cast("Fireball", entities[0].x, entities[0].y);
 ```
 
-Cast a skill on the specified cell. Returns one of the following values:
+Cast a skill on the specified cell.
+
+### PARAMETERS
+
+Parameter | Type   | Description
+----------|--------|-------------
+skill     | string | Name of the skill to use.
+x         | number | X coordinate of the cell.
+y         | number | Y coordinate of the cell.
+
+### RETURN VALUE
+
+Returns one of the following values:
 
  Value                 | Description
 -----------------------| ---------------------------------------
  `SUCCESS`             | The character used the skill successfully.
  `ERROR_ALREADY_USED`  | The character already used a skill this turn.
 
+ 
 ## cast(skill)
 
 ```javascript
@@ -164,6 +239,17 @@ cast("Heal", getPositionX(), getPositionY());
 ```
 
 Cast a skill on the current character. Alias for `cast(spell, getPositionX(), getPositionY())`.
+
+### PARAMETERS
+
+Parameter | Type   | Description
+----------|--------|-------------
+skill     | string | Name of the skill to use.
+
+### RETURN VALUE
+
+See `cast(skill, x, y)`.
+
 
 # Waiting for events
 
