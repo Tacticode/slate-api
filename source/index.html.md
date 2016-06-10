@@ -20,23 +20,21 @@ Welcome to the Tacticode API!
 
 ### getPositionX()
 
-Returns the X coordinate of the current character.
-
 ```javascript
 var x = getPositionX();
 ```
 
-### getPositionY()
+Returns the X coordinate of the current character.
 
-Returns the Y coordinate of the current character.
+### getPositionY()
 
 ```javascript
 var y = getPositionY();
 ```
 
-### getSkills()
+Returns the Y coordinate of the current character.
 
-Returns an array containing the names of the current character skills.
+### getSkills()
 
 ```javascript
 var skills = getSkills();
@@ -47,11 +45,11 @@ for (int i = 0; i < skills.length; ++i) {
 }
 ```
 
+Returns an array containing the names of the current character skills.
+
 ## About the map
 
 ### getCellHeight(x, y)
-
-Returns the height of the specified cell.
 
 ```javascript
 var height = getCellHeight(getPlayerX(), getPlayerY());
@@ -59,9 +57,9 @@ var height = getCellHeight(getPlayerX(), getPlayerY());
 console.log("Current height:", height);
 ```
 
-### isCellWalkable(x, y)
+Returns the height of the specified cell.
 
-Returns true if an entity can walk on the specified cell, false otherwise.
+### isCellWalkable(x, y)
 
 ```javascript
 var walkable = isCellWalkable(getPlayerX(), getPlayerY() + 1);
@@ -71,9 +69,9 @@ if (walkable) {
 }
 ```
 
-### hasCellLineOfSight(x, y)
+Returns true if an entity can walk on the specified cell, false otherwise.
 
-Returns true if the specified cell does not block the line of sight, false otherwise.
+### hasCellLineOfSight(x, y)
 
 ```javascript
 var los = hasCellLineOfSight(getPlayerX(), getPlayerY() + 1);
@@ -83,9 +81,20 @@ if (los) {
 }
 ```
 
+Returns true if the specified cell does not block the line of sight, false otherwise.
+
 ## About the other entities
 
 ### getEntities()
+
+```javascript
+var entities = getEntities();
+
+for (int i = 0; i < entities.length; ++i) {
+	console.log(entities[i].name, entities[i].x, entities[i].y);
+	// ...
+}
+```
 
 Returns an array containing all entities on the map, including our character.
 
@@ -98,18 +107,7 @@ Returns an array containing all entities on the map, including our character.
  team     | number | Team of the entity
  race     | string | Race of the entity
 
-```javascript
-var entities = getEntities();
-
-for (int i = 0; i < entities.length; ++i) {
-	console.log(entities[i].name, entities[i].x, entities[i].y);
-	// ...
-}
-```
-
 ### getEntityOnCell(x, y)
-
-If there is an entity on the specified cell, returns the entity. Returns `null` otherwise.
 
 ```javascript
 var entity = getEntityOnCell(15, 4);
@@ -119,6 +117,8 @@ if (entity !== null) {
 	// ...
 }
 ```
+
+If there is an entity on the specified cell, returns the entity. Returns `null` otherwise.
 
 # Executing an action
 
