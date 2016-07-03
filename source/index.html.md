@@ -28,8 +28,8 @@ var me = getCurrentEntity();
 
 console.log("Position:", me.x, me.y);
 console.log("Team:", me.team);
-console.log("Life:", me.life + "/" + me.maxLife);
-console.log("MP:", me.mp + "/" + me.maxMP);
+console.log("Life:", me.health + "/" + me.maxHealth);
+console.log("MP:", me.movement + "/" + me.maxMovement);
 
 for (int i = 0; i < me.skills.length; ++i) {
 	console.log(me.skills[i]);
@@ -50,10 +50,10 @@ Returns an object containing:
  y        | number | Y coordinate of the entity
  team     | number | Team of the entity
  race     | string | Race of the entity
- life     | number | Current life of the entity
- maxLife  | number | Maximum life of the entity
- mp       | number | Current movement points of the entity
- maxMp    | number | Maximum movement points of the entity
+ health   | number | Current life of the entity
+ maxHealth   | number | Maximum life of the entity
+ movement    | number | Current movement points of the entity
+ maxMovement | number | Maximum movement points of the entity
  skills   | array of string | Array containing the skills this entity can use
 
 
@@ -93,15 +93,17 @@ If there is an entity on the specified cell, returns the entity. Returns `null` 
 Returns an entity or `null`. See the return value of `getCurrentEntity()` for the definition of an entity.
 
 
-## getCellHeight(x, y)
+## getCell(x, y)
 
 ```javascript
-var height = getCellHeight(getPositionX(), getPositionY());
+var cell = getCell(getPositionX(), getPositionY());
 
-console.log("Current height:", height);
+console.log("Current height: ", cell.height);
+console.log("Walkable? ", cell.isAccessible);
+console.log("Line of sight? ", cell.hasLineOfSight);
 ```
 
-Returns the height of the specified cell.
+Returns an object containing information about the specified cell.
 
 ### PARAMETERS
 
@@ -112,55 +114,16 @@ y         | number | Y coordinate of the cell.
 
 ### RETURN VALUE
 
-Returns a number from -100 to 100 or `null` if the cell does not exist.
+If the cell does not exist, returns null. Otherwise, returns an object containing the following variables:
 
-
-## isCellWalkable(x, y)
-
-```javascript
-var walkable = isCellWalkable(getPositionX(), getPositionY() + 1);
-
-if (walkable) {
-	console.log("The cell south of us is walkable.")
-}
-```
-
-Returns whether or not the specified cell is walkable. A cell is walkable if entities can traverse it.
-
-### PARAMETERS
-
-Parameter | Type   | Description
-----------|--------|-------------
-x         | number | X coordinate of the cell.
-y         | number | Y coordinate of the cell.
-
-### RETURN VALUE
-
-Returns a `true` if the cell is walkable, `false` if not walkable` or `null` if the cell does not exist.
-
-
-## hasCellLineOfSight(x, y)
-
-Returns whether or not the specified cell will block the line of sight.
-
-```javascript
-var los = hasCellLineOfSight(getPositionX(), getPositionY() + 1);
-
-if (los) {
-	cast("Fireball", getPositionX(), getPositionY() + 2);
-}
-```
-
-### PARAMETERS
-
-Parameter | Type   | Description
-----------|--------|-------------
-x         | number | X coordinate of the cell.
-y         | number | Y coordinate of the cell.
-
-### RETURN VALUE
-
-Returns a `true` if the cell will not block the line of sight, `false` if it will block or `null` if the cell does not exist.
+ Variable | Type   | Description
+----------|--------|----------------------------------
+ x        | number | X coordinate of the cell
+ y        | number | Y coordinate of the cell
+ height   | number | Height of the cell
+ isAccessible   | boolean | True if we can walk on the cell, false otherwise.
+ hasLineOfSight | boolean | False if the cell is blocking the sight, true otherwise.
+ isFree   | boolean | True if there is an entity on the cell.
 
 
 # Executing actions
