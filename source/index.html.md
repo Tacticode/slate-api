@@ -31,7 +31,7 @@ console.log("Team:", me.team);
 console.log("Life:", me.health + "/" + me.maxHealth);
 console.log("MP:", me.movement + "/" + me.maxMovement);
 
-for (int i = 0; i < me.skills.length; ++i) {
+for (var i = 0; i < me.skills.length; ++i) {
 	console.log(me.skills[i]);
 }
 ```
@@ -62,7 +62,7 @@ Returns an object containing:
 ```javascript
 var entities = getEntities();
 
-for (int i = 0; i < entities.length; ++i) {
+for (var i = 0; i < entities.length; ++i) {
 	console.log(entities[i].name, entities[i].x, entities[i].y);
 	// ...
 }
